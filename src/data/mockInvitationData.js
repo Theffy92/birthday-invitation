@@ -28,8 +28,8 @@ export const mockInvitationData = {
   contribution: {
     title: "A la canasta",
     description:
-      "La celebración será a la canasta. Traé algo rico para compartir y pasar una noche increíble juntos.",
-    idea: "Tip: pensá en bebidas, picadas, ensaladas o postres.",
+      "La celebración será a la canasta. Traé algo rico para de beber y comer para compartir y pasar una noche tranqui juntos.",
+    idea: "Tip: La bebida es mucho muy importante (ej: Alcohol o coca para el Fernet), picadas, ensaladas o postres.",
     prompt: "¿Qué tienen pensado traer?",
     placeholder: "Ej: empanadas, ensalada, torta, bebidas...",
   },

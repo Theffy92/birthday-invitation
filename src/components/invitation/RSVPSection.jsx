@@ -1,6 +1,6 @@
 import SectionTitle from "./SectionTitle"
 
-function RSVPSection({ guests }) {
+function RSVPSection({ guests, onGuestToggle }) {
   return (
     <section className="space-y-4">
       <SectionTitle>rsvp</SectionTitle>
@@ -18,19 +18,13 @@ function RSVPSection({ guests }) {
               <input
                 type="checkbox"
                 defaultChecked={guest.attending}
+                onChange={() => onGuestToggle(guest.id)}
                 className="h-4 w-4 accent-fuchsia-500"
-                readOnly
+                // readOnly
               />
             </label>
           ))}
         </div>
-
-        <button
-          type="button"
-          className="mt-5 w-full rounded-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-[0_0_24px_rgba(232,121,249,0.65)]"
-        >
-          Confirmar RSVP
-        </button>
 
         <p className="mt-3 text-center text-[11px] text-violet-300/80">
           Podés volver a este enlace para actualizar tu respuesta en cualquier momento.

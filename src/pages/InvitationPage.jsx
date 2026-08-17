@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import ConfirmationCard from "../components/invitation/ConfirmationCard"
 import EventDetailsSection from "../components/invitation/EventDetailsSection"
 import HeroSection from "../components/invitation/HeroSection"
@@ -6,6 +7,45 @@ import RSVPSection from "../components/invitation/RSVPSection"
 import { mockInvitationData } from "../data/mockInvitationData"
 
 function InvitationPage() {
+  const [guests, setGuests] = useState(mockInvitationData.guests)
+  const [contribution, setContribution] = useState("")
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
+  function handleGuestToggle(guestId) {
+    setGuests((currentGuests) => {
+        const updatedGuests = currentGuests.map((guest) => 
+          guest.id === guestId
+            ? { ...guest, attending: !guest.attending }
+            :guest
+        )
+
+        const hasAttendingGuests = updatedGuests.some((guest) => guest.attending)
+
+        if (!hasAttendingGuests) {
+          setContribution("")
+        }
+
+        return updatedGuests
+    })
+  }
+
+  function handleSubmit() {
+    if (hasAttendingGuests && !contribution.trim()) {
+      return 
+    }
+    
+    setIsSubmitted(true)
+  }
+
+  function handleEdit() {
+    setIsSubmitted(false)
+  }
+
+  const attendingGuests = guests.filter((guest) => guest.attending)
+  const hasAttendingGuests = guests.some((guest) => guest.attending)
+  const hasContribution = contribution.trim().length > 0
+  const canSubmit = !hasAttendingGuests || hasContribution
+
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#05020d] px-4 py-8 text-white sm:px-6 sm:py-10">
       <div className="pointer-events-none absolute inset-0">
@@ -24,9 +64,32 @@ function InvitationPage() {
             details={mockInvitationData.eventDetails}
             rsvpDeadline={mockInvitationData.rsvpDeadline}
           />
-          <PotluckSection contribution={mockInvitationData.contribution} />
-          <RSVPSection guests={mockInvitationData.guests} />
-          <ConfirmationCard confirmation={mockInvitationData.confirmation} />
+          <RSVPSection 
+            guests={guests}
+            onGuestToggle={handleGuestToggle} 
+          />
+          <PotluckSection 
+            contribution={mockInvitationData.contribution} 
+            value={contribution}
+            onChange={setContribution}
+            disabled={!hasAttendingGuests}
+          />
+
+          <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={!canSubmit}
+          className="mt-5 w-full rounded-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-[0_0_24px_rgba(232,121,249,0.65)]"
+          >
+            Confirmar Asistencia
+          </button>
+          {isSubmitted && (
+            <ConfirmationCard
+              guests={attendingGuests}
+              contribution={contribution}
+              onEdit={handleEdit}
+            />
+          )}
         </article>
       </div>
     </main>
