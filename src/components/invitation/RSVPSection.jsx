@@ -11,7 +11,7 @@ function RSVPSection({ guests }) {
         <div className="mt-3 space-y-3">
           {guests.map((guest) => (
             <label
-              key={guest.name}
+              key={guest.id}
               className="flex items-center justify-between rounded-lg border border-violet-500/40 bg-violet-950/60 px-3 py-2 text-sm text-violet-50"
             >
               <span>{guest.name}</span>
