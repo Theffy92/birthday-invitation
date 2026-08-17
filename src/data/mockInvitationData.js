@@ -1,46 +1,46 @@
 export const mockInvitationData = {
   celebrant: "Theffy",
-  inviteesLine: "Kat, Tomás & Penny",
+  inviteesLine: "Bonnie, Damon & Penny",
   hero: {
-    title: "Theffy's Birthday",
-    subtitle: "let's celebrate in argentina!",
+    title: "Cumple de Theffy",
+    subtitle: "Nos vemos en Corrientes!",
     note: "The Scrapbook Edition",
     description:
-      "Pack your bags! We are throwing the ultimate birthday rendezvous right in the heart of Buenos Aires.",
-    postcardTitle: "Palermo Nights",
-    postcardDate: "Sept 2026",
+      "Voy a estar celebrando mi cumple N° 24(+10) 👀 en Corrientes.",
+    postcardTitle: "Ni idea qué poner acá",
+    postcardDate: "19 de Septiembre de 2026",
   },
   eventDetails: [
     {
       label: "Date",
-      value: "Saturday, September 21, 2026",
+      value: "Sábado, 19 de Septiembre, 2026",
     },
     {
       label: "Time",
-      value: "8:00 PM",
+      value: "21:00",
     },
     {
       label: "Location",
-      value: "Calle Falsa 123, Palermo, Buenos Aires",
+      value: "Calle Falsa 123, Corrientes, Argentina",
     },
   ],
-  rsvpDeadline: "Please RSVP by September 18",
+  rsvpDeadline: "Por favor, confirmá tu asistencia antes del 13 de septiembre.",
   contribution: {
     title: "A la canasta",
     description:
-      "La celebración será a la canasta. Traé algo rico para compartir y pasar una noche increíble juntos.",
-    idea: "Tip: pensá en bebidas, picadas, ensaladas o postres.",
+      "La celebración será a la canasta. Traé algo rico para de beber y comer para compartir y pasar una noche tranqui juntos.",
+    idea: "Tip: La bebida es mucho muy importante (ej: Alcohol o coca para el Fernet), picadas, ensaladas o postres.",
     prompt: "¿Qué tienen pensado traer?",
     placeholder: "Ej: empanadas, ensalada, torta, bebidas...",
   },
   guests: [
-    { name: "Kat", attending: true },
-    { name: "Tomás", attending: true },
-    { name: "Penny", attending: false },
+    {id: "guest-1", name: "Bonnie", attending: true },
+    {id: "guest-2", name: "Damon", attending: true },
+    {id: "guest-3", name: "Penny", attending: false },
   ],
   confirmation: {
     title: "Confirmado",
-    summary: "Kat & Tomás asisten a la fiesta",
+    summary: "Bonnie & Damon asisten a la fiesta",
     contribution: "Traen: Empanadas & Fernet",
   },
 }
