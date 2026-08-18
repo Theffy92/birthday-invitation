@@ -23,7 +23,7 @@ function ConfirmationCard({ guests, contribution, onEdit}) {
         onClick={onEdit}
         className="mt-4 text-sm font-semibold text-emerald-200 underline"
       >
-        Actualizar confirmación 
+        Actualizar información
       </button>
     </section>
   )

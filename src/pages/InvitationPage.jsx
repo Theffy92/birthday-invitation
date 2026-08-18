@@ -7,78 +7,125 @@ import PotluckSection from "../components/invitation/PotluckSection"
 import RSVPSection from "../components/invitation/RSVPSection"
 import DeclineModal from "../components/invitation/DeclineModal"
 import { mockInvitationData } from "../data/mockInvitationData"
-import { getInvitationWording } from '../utils/intirationWording'
+import { getInvitationWording } from '../utils/invitationWording'
 
 function InvitationPage({ token }) {
   const [invitationData, setInvitationData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState(null)
+
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState(null)
+
   const [guests, setGuests] = useState([])
   const [contribution, setContribution] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [showDeclineModal, setShowDeclineModal] = useState(false)
+
   const wording = getInvitationWording(guests.length)
   const isSingleGuest = guests.length === 1
 
   function handleGuestToggle(guestId) {
     setGuests((currentGuests) => {
-        const updatedGuests = currentGuests.map((guest) => 
-          guest.id === guestId
-            ? { ...guest, attending: !guest.attending }
-            :guest
-        )
+      const updatedGuests = currentGuests.map((guest) =>
+        guest.id === guestId
+          ? { ...guest, attending: !guest.attending }
+          : guest
+      )
 
-        const hasAttendingGuests = updatedGuests.some((guest) => guest.attending)
+      const hasAttendingGuests = updatedGuests.some(
+        (guest) => guest.attending
+      )
 
-        if (!hasAttendingGuests) {
-          setContribution("")
-        }
+      if (!hasAttendingGuests) {
+        setContribution("")
+      }
 
-        return updatedGuests
+      return updatedGuests
     })
   }
 
-  function handleSubmit() {
-    if (isSingleGuest) {
-      const singleGuestIsAttending = guests[0]?.attending
+  async function handleSubmit() {
+    const hasAttendingGuests = guests.some(
+      (guest) => guest.attending === true
+    )
 
-      if (!singleGuestIsAttending) {
-        handleSingleGuestConfirm()
-        return
+    if (!hasAttendingGuests || !contribution.trim()) {
+      return
+    }
+
+    setIsSaving(true)
+    setSaveError(null)
+
+    const guestResponses = guests.map((guest) => ({
+      id: guest.id,
+      attending: guest.attending === true,
+    }))
+
+    const { error } = await supabase.rpc(
+      "save_invitation_response",
+      {
+        invitation_token: token,
+        guest_responses: guestResponses,
+        contribution_text: contribution.trim(),
       }
+    )
+
+    setIsSaving(false)
+
+    if (error) {
+      console.error("Failed to save response:", error)
+      setSaveError(
+        "No pudimos guardar tu respuesta. Intentá nuevamente."
+      )
+      return
     }
 
-    if (hasAttendingGuests && !contribution.trim()) {
-      return 
-    }
-    
     setIsSubmitted(true)
   }
 
-  function handleEdit() {
-    setIsSubmitted(false)
-  }
+  async function handleDecline() {
+    const declinedGuests = guests.map((guest) => ({
+      ...guest,
+      attending: false,
+    }))
 
-  function handleDecline() {
-    setGuests((currentGuests) => 
-      currentGuests.map((guest) => ({
-        ...guest,
-        attending: false,
-      })
-    ))
+    setIsSaving(true)
+    setSaveError(null)
 
+    const guestResponses = declinedGuests.map((guest) => ({
+      id: guest.id,
+      attending: false,
+    }))
+
+    const { error } = await supabase.rpc(
+      "save_invitation_response",
+      {
+        invitation_token: token,
+        guest_responses: guestResponses,
+        contribution_text: null,
+      }
+    )
+
+    setIsSaving(false)
+
+    if (error) {
+      console.error("Failed to save decline:", error)
+      setSaveError(
+        "No pudimos guardar tu respuesta. Intentá nuevamente."
+      )
+      return
+    }
+
+    setGuests(declinedGuests)
     setContribution("")
     setIsSubmitted(false)
     setShowDeclineModal(true)
   }
 
-  function handleSingleGuestConfirm() {
-  setGuests((currentGuests) =>
-    currentGuests.map((guest) => ({
-      ...guest,
-      attending: true,
-      }))
-    )
+  function handleEdit() {
+    setIsSubmitted(false)
+    setSaveError(null)
   }
 
   useEffect(() => {
@@ -90,9 +137,11 @@ function InvitationPage({ token }) {
       }
 
       const { data, error } = await supabase.rpc(
-        'get_invitation_by_token', { 
-        invitation_token: token, 
-      })
+        "get_invitation_by_token",
+        {
+          invitation_token: token,
+        }
+      )
 
       if (error) {
         console.error("Error al cargar la invitación:", error)
@@ -106,16 +155,28 @@ function InvitationPage({ token }) {
         setIsLoading(false)
         return
       }
-      
+
       setInvitationData(data)
       setGuests(data.guests)
+
+      if (data.response) {
+        setContribution(data.response.contribution ?? "")
+
+        const hasResponded = data.guests.some(
+          (guest) => guest.attending === true
+        )
+
+        const hasAttendingGuests = data.guests.some(
+          (guest) => guest.attending === true
+        )
+
+        setIsSubmitted(hasResponded && hasAttendingGuests)
+      }
       setIsLoading(false)
     }
 
     loadInvitation()
   }, [token])
-
-  console.log("Invitation data:", invitationData) // Log the invitation data for debugging
 
   if (isLoading) {
     return (
@@ -171,11 +232,17 @@ function InvitationPage({ token }) {
     },
   }
 
-  const attendingGuests = guests.filter((guest) => guest.attending)
-  const nobodyAttending = attendingGuests.length === 0
-  const hasAttendingGuests = guests.some((guest) => guest.attending)
+  const attendingGuests = guests.filter(
+    (guest) => guest.attending === true
+  )
+
+  const hasAttendingGuests = attendingGuests.length > 0
   const hasContribution = contribution.trim().length > 0
-  const canSubmit = !hasAttendingGuests || hasContribution
+
+  // The normal confirmation button is only valid when
+  // someone is attending AND they entered a contribution.
+  // Declining is handled separately by the decline button.
+  const canSubmit = hasAttendingGuests && hasContribution
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#05020d] px-4 py-8 text-white sm:px-6 sm:py-10">
@@ -191,46 +258,57 @@ function InvitationPage({ token }) {
             inviteesLine={pageData.inviteesLine}
             hero={pageData.hero}
           />
+
           <EventDetailsSection
             details={pageData.eventDetails}
             rsvpDeadline={pageData.rsvpDeadline}
           />
-          <RSVPSection 
+
+          <RSVPSection
             guests={guests}
             isSingleGuest={isSingleGuest}
             declineLabel={wording.declineLabel}
             onDecline={handleDecline}
-            onGuestToggle={handleGuestToggle} 
+            onGuestToggle={handleGuestToggle}
           />
-          <PotluckSection 
-            contribution={pageData.contribution} 
+
+          <PotluckSection
+            contribution={pageData.contribution}
             prompt={wording.contributionPrompt}
             value={contribution}
             onChange={setContribution}
             disabled={!hasAttendingGuests}
           />
 
-          <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={!canSubmit}
-          className="mt-5 w-full rounded-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-[0_0_24px_rgba(232,121,249,0.65)]"
-          >
-            Confirmar Asistencia
-          </button>
+          {!isSubmitted && (
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={!canSubmit || isSaving}
+              className="mt-5 w-full rounded-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-[0_0_24px_rgba(232,121,249,0.65)] disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
+            >
+              {isSaving ? "Guardando..." : "Confirmar asistencia"}
+            </button>
+          )}
+
+          {saveError && (
+            <p className="mt-3 text-center text-sm text-rose-300">
+              {saveError}
+            </p>
+          )}
+
           {isSubmitted && (
             <ConfirmationCard
               guests={attendingGuests}
               contribution={contribution}
               onEdit={handleEdit}
-              declineMessage={wording.declineMessage}
-              nobodyAttending={nobodyAttending}
             />
           )}
         </article>
       </div>
+
       {showDeclineModal && (
-        <DeclineModal 
+        <DeclineModal
           message={wording.declineMessage}
           onClose={() => setShowDeclineModal(false)}
         />
