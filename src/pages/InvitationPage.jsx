@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
 import ConfirmationCard from "../components/invitation/ConfirmationCard"
 import EventDetailsSection from "../components/invitation/EventDetailsSection"
 import HeroSection from "../components/invitation/HeroSection"
@@ -8,8 +9,11 @@ import DeclineModal from "../components/invitation/DeclineModal"
 import { mockInvitationData } from "../data/mockInvitationData"
 import { getInvitationWording } from '../utils/intirationWording'
 
-function InvitationPage() {
-  const [guests, setGuests] = useState(mockInvitationData.guests)
+function InvitationPage({ token }) {
+  const [invitationData, setInvitationData] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [loadError, setLoadError] = useState(null)
+  const [guests, setGuests] = useState([])
   const [contribution, setContribution] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [showDeclineModal, setShowDeclineModal] = useState(false)
@@ -77,6 +81,96 @@ function InvitationPage() {
     )
   }
 
+  useEffect(() => {
+    async function loadInvitation() {
+      if (!token) {
+        setLoadError("No se proporcionó un token de invitación.")
+        setIsLoading(false)
+        return
+      }
+
+      const { data, error } = await supabase.rpc(
+        'get_invitation_by_token', { 
+        invitation_token: token, 
+      })
+
+      if (error) {
+        console.error("Error al cargar la invitación:", error)
+        setLoadError("Ocurrió un error al cargar la invitación.")
+        setIsLoading(false)
+        return
+      }
+
+      if (!data) {
+        setLoadError("No se encontró la invitación.")
+        setIsLoading(false)
+        return
+      }
+      
+      setInvitationData(data)
+      setGuests(data.guests)
+      setIsLoading(false)
+    }
+
+    loadInvitation()
+  }, [token])
+
+  console.log("Invitation data:", invitationData) // Log the invitation data for debugging
+
+  if (isLoading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#05020d] text-white">
+        <p>Cargando invitación...</p>
+      </main>
+    )
+  }
+
+  if (loadError) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#05020d] px-6 text-center text-white">
+        <p>{loadError}</p>
+      </main>
+    )
+  }
+
+  const pageData = {
+    celebrant: invitationData.event.celebrant,
+    inviteesLine: invitationData.invitation.display_name,
+
+    hero: {
+      title: invitationData.event.title,
+      subtitle: invitationData.event.subtitle ?? "",
+      description: invitationData.event.description ?? "",
+      note: mockInvitationData.hero.note,
+      postcardTitle: mockInvitationData.hero.postcardTitle,
+      postcardDate: mockInvitationData.hero.postcardDate,
+    },
+
+    eventDetails: [
+      {
+        label: "Fecha",
+        value: invitationData.event.event_date,
+      },
+      {
+        label: "Hora",
+        value: invitationData.event.event_time,
+      },
+      {
+        label: "Lugar",
+        value: invitationData.event.address,
+      },
+    ],
+
+    rsvpDeadline: invitationData.event.rsvp_deadline,
+
+    contribution: {
+      ...mockInvitationData.contribution,
+      title: invitationData.event.contribution_title,
+      description:
+        invitationData.event.contribution_description ?? "",
+    },
+  }
+
   const attendingGuests = guests.filter((guest) => guest.attending)
   const nobodyAttending = attendingGuests.length === 0
   const hasAttendingGuests = guests.some((guest) => guest.attending)
@@ -93,13 +187,13 @@ function InvitationPage() {
       <div className="relative mx-auto flex w-full max-w-4xl justify-center">
         <article className="w-full max-w-3xl space-y-9 rounded-[28px] border border-violet-500/40 bg-[#0a0618]/85 p-4 shadow-[0_0_40px_rgba(124,58,237,0.2)] backdrop-blur md:p-8">
           <HeroSection
-            celebrant={mockInvitationData.celebrant}
-            inviteesLine={mockInvitationData.inviteesLine}
-            hero={mockInvitationData.hero}
+            celebrant={pageData.celebrant}
+            inviteesLine={pageData.inviteesLine}
+            hero={pageData.hero}
           />
           <EventDetailsSection
-            details={mockInvitationData.eventDetails}
-            rsvpDeadline={mockInvitationData.rsvpDeadline}
+            details={pageData.eventDetails}
+            rsvpDeadline={pageData.rsvpDeadline}
           />
           <RSVPSection 
             guests={guests}
@@ -109,7 +203,7 @@ function InvitationPage() {
             onGuestToggle={handleGuestToggle} 
           />
           <PotluckSection 
-            contribution={mockInvitationData.contribution} 
+            contribution={pageData.contribution} 
             prompt={wording.contributionPrompt}
             value={contribution}
             onChange={setContribution}
