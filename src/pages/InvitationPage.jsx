@@ -4,12 +4,17 @@ import EventDetailsSection from "../components/invitation/EventDetailsSection"
 import HeroSection from "../components/invitation/HeroSection"
 import PotluckSection from "../components/invitation/PotluckSection"
 import RSVPSection from "../components/invitation/RSVPSection"
+import DeclineModal from "../components/invitation/DeclineModal"
 import { mockInvitationData } from "../data/mockInvitationData"
+import { getInvitationWording } from '../utils/intirationWording'
 
 function InvitationPage() {
   const [guests, setGuests] = useState(mockInvitationData.guests)
   const [contribution, setContribution] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [showDeclineModal, setShowDeclineModal] = useState(false)
+  const wording = getInvitationWording(guests.length)
+  const isSingleGuest = guests.length === 1
 
   function handleGuestToggle(guestId) {
     setGuests((currentGuests) => {
@@ -30,6 +35,15 @@ function InvitationPage() {
   }
 
   function handleSubmit() {
+    if (isSingleGuest) {
+      const singleGuestIsAttending = guests[0]?.attending
+
+      if (!singleGuestIsAttending) {
+        handleSingleGuestConfirm()
+        return
+      }
+    }
+
     if (hasAttendingGuests && !contribution.trim()) {
       return 
     }
@@ -41,7 +55,30 @@ function InvitationPage() {
     setIsSubmitted(false)
   }
 
+  function handleDecline() {
+    setGuests((currentGuests) => 
+      currentGuests.map((guest) => ({
+        ...guest,
+        attending: false,
+      })
+    ))
+
+    setContribution("")
+    setIsSubmitted(false)
+    setShowDeclineModal(true)
+  }
+
+  function handleSingleGuestConfirm() {
+  setGuests((currentGuests) =>
+    currentGuests.map((guest) => ({
+      ...guest,
+      attending: true,
+      }))
+    )
+  }
+
   const attendingGuests = guests.filter((guest) => guest.attending)
+  const nobodyAttending = attendingGuests.length === 0
   const hasAttendingGuests = guests.some((guest) => guest.attending)
   const hasContribution = contribution.trim().length > 0
   const canSubmit = !hasAttendingGuests || hasContribution
@@ -66,10 +103,14 @@ function InvitationPage() {
           />
           <RSVPSection 
             guests={guests}
+            isSingleGuest={isSingleGuest}
+            declineLabel={wording.declineLabel}
+            onDecline={handleDecline}
             onGuestToggle={handleGuestToggle} 
           />
           <PotluckSection 
             contribution={mockInvitationData.contribution} 
+            prompt={wording.contributionPrompt}
             value={contribution}
             onChange={setContribution}
             disabled={!hasAttendingGuests}
@@ -88,10 +129,18 @@ function InvitationPage() {
               guests={attendingGuests}
               contribution={contribution}
               onEdit={handleEdit}
+              declineMessage={wording.declineMessage}
+              nobodyAttending={nobodyAttending}
             />
           )}
         </article>
       </div>
+      {showDeclineModal && (
+        <DeclineModal 
+          message={wording.declineMessage}
+          onClose={() => setShowDeclineModal(false)}
+        />
+      )}
     </main>
   )
 }
