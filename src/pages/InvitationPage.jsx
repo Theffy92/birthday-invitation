@@ -4,6 +4,7 @@ import EventDetailsSection from "../components/invitation/EventDetailsSection"
 import HeroSection from "../components/invitation/HeroSection"
 import PotluckSection from "../components/invitation/PotluckSection"
 import RSVPSection from "../components/invitation/RSVPSection"
+import DeclineModal from "../components/invitation/DeclineModal"
 import { mockInvitationData } from "../data/mockInvitationData"
 import { getInvitationWording } from '../utils/intirationWording'
 
@@ -11,6 +12,7 @@ function InvitationPage() {
   const [guests, setGuests] = useState(mockInvitationData.guests)
   const [contribution, setContribution] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [showDeclineModal, setShowDeclineModal] = useState(false)
   const wording = getInvitationWording(guests.length)
   const isSingleGuest = guests.length === 1
 
@@ -62,7 +64,8 @@ function InvitationPage() {
     ))
 
     setContribution("")
-    setIsSubmitted(true)
+    setIsSubmitted(false)
+    setShowDeclineModal(true)
   }
 
   function handleSingleGuestConfirm() {
@@ -132,6 +135,12 @@ function InvitationPage() {
           )}
         </article>
       </div>
+      {showDeclineModal && (
+        <DeclineModal 
+          message={wording.declineMessage}
+          onClose={() => setShowDeclineModal(false)}
+        />
+      )}
     </main>
   )
 }

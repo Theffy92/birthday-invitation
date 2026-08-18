@@ -11,8 +11,8 @@ export function getInvitationWording(guestCount) {
             : "No podremos asistir",
 
         declineMessage: isSingleGuest
-            ? "Muchas gracias por avisar, y lamento que no puedas venir."
-            : "Muchas gracias por avisar, y lamento que no puedan venir.",
+            ? "Muchas gracias por avisar, y lamento que no puedas venir. 😔"
+            : "Muchas gracias por avisar, y lamento que no puedan venir. 😔",
 
         confirmLabel: "Confirmar asistencia",
     }
