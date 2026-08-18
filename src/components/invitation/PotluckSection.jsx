@@ -1,4 +1,4 @@
-function PotluckSection({ contribution, value, onChange, disabled }) {
+function PotluckSection({ contribution, prompt, value, onChange, disabled }) {
   return (
     <section className="grid gap-4 sm:grid-cols-2">
       <article className="-rotate-1 rounded-sm bg-amber-50 p-5 text-zinc-900 shadow-[0_12px_30px_rgba(10,2,20,0.7)]">
@@ -9,7 +9,7 @@ function PotluckSection({ contribution, value, onChange, disabled }) {
 
       <article className="rounded-2xl border border-violet-500/80 bg-violet-950/40 p-4 shadow-[0_0_28px_rgba(147,51,234,0.2)]">
         <p className="text-sm font-semibold text-violet-100">
-          {contribution.prompt}
+          {prompt}
           <span className="ml-1 text-fuchsia-400">*</span>
         </p>
         {!disabled && (

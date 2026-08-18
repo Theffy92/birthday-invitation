@@ -1,4 +1,4 @@
-function ConfirmationCard({ guests, contribution, onEdit }) {
+function ConfirmationCard({ guests, contribution, onEdit, declineMessage, nobodyAttending }) {
   const guestNames = guests.map((guest) => guest.name).join(", ")
 
   return (
@@ -6,18 +6,24 @@ function ConfirmationCard({ guests, contribution, onEdit }) {
       <p className="text-sm font-semibold uppercase tracking-wide text-emerald-300">
         Confirmado
       </p>
-      <p className="mt-2 text-base font-semibold">
-        {guests.length > 1
-          ? `${guestNames} asisten a la fiesta`
-          : guests.length === 1
-            ? `${guestNames} asiste a la fiesta`
-            : "Nadie del grupo podrá asistir"
-        }
-      </p>
-      {contribution && (
-        <p className="mt-3 text-sm text-emerald-100/90">
-          Traen: {contribution}
+      {nobodyAttending ? (
+        <p className="mt-2 text-base font-semibold">
+          {declineMessage}
         </p>
+      ) : (
+        <>
+          <p className="mt-2 text-base font-semibold">
+            {guests.length === 1
+              ? `${guestNames} asiste a la fiesta`
+              : `${guestNames} asisten a la fiesta`}
+          </p>
+
+          {contribution && (
+            <p className="mt-3 text-sm text-emerald-100/90">
+              Traen: {contribution}
+            </p>
+          )}
+        </>
       )}
 
       <button 
