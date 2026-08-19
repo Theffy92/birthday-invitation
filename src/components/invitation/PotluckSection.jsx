@@ -1,4 +1,4 @@
-function PotluckSection({ contribution, prompt, value, onChange, disabled }) {
+function PotluckSection({ contribution, prompt, value, onChange, disabled, potluckLabel }) {
   return (
     <section className="grid gap-4 sm:grid-cols-2">
       <article className="-rotate-1 rounded-sm bg-amber-50 p-5 text-zinc-900 shadow-[0_12px_30px_rgba(10,2,20,0.7)]">
@@ -25,8 +25,8 @@ function PotluckSection({ contribution, prompt, value, onChange, disabled }) {
           className="mt-3 min-h-28 w-full resize-y rounded-xl border border-violet-500/40 bg-violet-950/60 p-3 text-sm text-violet-100 placeholder:text-violet-300/80 focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/30"
         />
         {disabled && (
-          <p class="mt-2 text-xs text-violet-300/60">
-            Confirmá al menos una persona para completar esta sección.
+          <p className="mt-2 text-xs text-violet-300/60">
+            {potluckLabel}
           </p>
         )}
       </article>

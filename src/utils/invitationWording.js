@@ -2,6 +2,10 @@ export function getInvitationWording(guestCount) {
     const isSingleGuest = guestCount === 1
 
     return {
+        invitationHeader: isSingleGuest
+            ? "Te invito a celebrar"
+            : "Les invito a celebrar",
+
         contributionPrompt: isSingleGuest
             ? "¿Qué tenés pensado traer?"
             : "¿Qué tienen pensado traer?",
@@ -13,6 +17,10 @@ export function getInvitationWording(guestCount) {
         declineMessage: isSingleGuest
             ? "Muchas gracias por avisar, y lamento que no puedas venir. 😔"
             : "Muchas gracias por avisar, y lamento que no puedan venir. 😔",
+        
+        potluckLabel: isSingleGuest
+            ? "Confirmá tu asistencia para poder completar esta sección"
+            : "Confirmá al menos una persona para poder completar esta sección",
 
         confirmLabel: "Confirmar asistencia",
     }

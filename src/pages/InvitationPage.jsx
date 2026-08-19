@@ -6,8 +6,9 @@ import HeroSection from "../components/invitation/HeroSection"
 import PotluckSection from "../components/invitation/PotluckSection"
 import RSVPSection from "../components/invitation/RSVPSection"
 import DeclineModal from "../components/invitation/DeclineModal"
-import { mockInvitationData } from "../data/mockInvitationData"
 import { getInvitationWording } from '../utils/invitationWording'
+import { formatDate } from '../utils/dateFormat'
+
 
 function InvitationPage({ token }) {
   const [invitationData, setInvitationData] = useState(null)
@@ -163,7 +164,7 @@ function InvitationPage({ token }) {
         setContribution(data.response.contribution ?? "")
 
         const hasResponded = data.guests.some(
-          (guest) => guest.attending === true
+          (guest) => guest.attending !== null
         )
 
         const hasAttendingGuests = data.guests.some(
@@ -202,15 +203,15 @@ function InvitationPage({ token }) {
       title: invitationData.event.title,
       subtitle: invitationData.event.subtitle ?? "",
       description: invitationData.event.description ?? "",
-      note: mockInvitationData.hero.note,
-      postcardTitle: mockInvitationData.hero.postcardTitle,
-      postcardDate: mockInvitationData.hero.postcardDate,
+      note: invitationData.event.hero_note ?? "",
+      postcardTitle: invitationData.event.postcard_title ?? "",
+      postcardDate: invitationData.event.postcard_date ?? "",
     },
 
     eventDetails: [
       {
         label: "Fecha",
-        value: invitationData.event.event_date,
+        value: formatDate(invitationData.event.event_date),
       },
       {
         label: "Hora",
@@ -225,10 +226,11 @@ function InvitationPage({ token }) {
     rsvpDeadline: invitationData.event.rsvp_deadline,
 
     contribution: {
-      ...mockInvitationData.contribution,
       title: invitationData.event.contribution_title,
       description:
         invitationData.event.contribution_description ?? "",
+      idea: invitationData.event.contribution_idea ?? "",
+      placeholder: "Ej: gaseosa, empanadas, sandwichitos...",
     },
   }
 
@@ -257,6 +259,7 @@ function InvitationPage({ token }) {
             celebrant={pageData.celebrant}
             inviteesLine={pageData.inviteesLine}
             hero={pageData.hero}
+            guestCount={guests.length}
           />
 
           <EventDetailsSection
@@ -267,6 +270,7 @@ function InvitationPage({ token }) {
           <RSVPSection
             guests={guests}
             isSingleGuest={isSingleGuest}
+            rsvpDeadline={pageData.rsvpDeadline}
             declineLabel={wording.declineLabel}
             onDecline={handleDecline}
             onGuestToggle={handleGuestToggle}
@@ -278,6 +282,7 @@ function InvitationPage({ token }) {
             value={contribution}
             onChange={setContribution}
             disabled={!hasAttendingGuests}
+            potluckLabel={wording.potluckLabel}
           />
 
           {!isSubmitted && (

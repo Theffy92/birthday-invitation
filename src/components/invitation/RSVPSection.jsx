@@ -1,4 +1,5 @@
 import SectionTitle from "./SectionTitle"
+import { formatDate } from "../../utils/dateFormat"
 
 function RSVPSection({
   guests,
@@ -6,10 +7,14 @@ function RSVPSection({
   declineLabel,
   onDecline,
   isSingleGuest,
+  rsvpDeadline,
 }) {
   return (
     <section className="space-y-4">
       <SectionTitle>rsvp</SectionTitle>
+      <p className="rounded-full border border-fuchsia-500/70 px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-wide text-fuchsia-300">
+        Confirmar asistencia para el {formatDate(rsvpDeadline)} 
+      </p>
 
       <div className="rounded-2xl border border-fuchsia-500/80 bg-violet-950/50 p-4 shadow-[0_0_40px_rgba(236,72,153,0.25)]">
         {isSingleGuest ? (

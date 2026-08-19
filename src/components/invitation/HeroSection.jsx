@@ -1,11 +1,15 @@
-function HeroSection({ celebrant, inviteesLine, hero }) {
+import { getInvitationWording } from "../../utils/invitationWording"
+import theffyImage from "../../assets/theffy.jpeg"
+
+function HeroSection({ celebrant, inviteesLine, hero, guestCount }) {
+  const invitationWording = getInvitationWording(guestCount)
   return (
     <section className="space-y-8">
       <header className="space-y-5 text-center">
-        <p className="text-xs uppercase tracking-[0.2em] text-violet-300/90">hey &lt;3</p>
+        {/* <p className="text-xs uppercase tracking-[0.2em] text-violet-300/90">hey &lt;3</p> */}
         <div className="space-y-1 text-xs text-violet-200/80">
           <p>{inviteesLine}</p>
-          <p>you&apos;re invited to</p>
+          <p>{invitationWording.invitationHeader}</p>
         </div>
         <div className="mx-auto max-w-xl border-y border-violet-500/60 py-5">
           <h1 className="text-3xl font-black uppercase tracking-wide text-violet-100 drop-shadow-[0_0_16px_rgba(217,70,239,0.6)] sm:text-5xl">
@@ -19,7 +23,11 @@ function HeroSection({ celebrant, inviteesLine, hero }) {
 
       <div className="grid gap-5 sm:grid-cols-[1.15fr_1fr] sm:items-center">
         <div className="mx-auto w-full max-w-sm -rotate-2 rounded-sm bg-zinc-100 p-3 text-zinc-900 shadow-[0_12px_30px_rgba(10,2,20,0.7)]">
-          <div className="h-44 rounded-xs bg-gradient-to-br from-amber-700 via-orange-500 to-fuchsia-700" />
+          <img
+            src={theffyImage}
+            alt={`Photo of ${celebrant}`}
+            className="h-44 w-full rounded-xs object-cover"
+          />
           <p className="mt-2 text-center text-sm font-medium">
             {hero.postcardTitle} * {hero.postcardDate}
           </p>
