@@ -16,7 +16,7 @@ function PotluckSection({ contribution, prompt, value, onChange, disabled, potlu
           src={basket}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute -right-3 -top-4 w-14 rotate-6 sm:w-16"
+          className="pointer-events-none absolute -bottom-5 -right-4 z-20 w-16 rotate-[-6deg] sm:-bottom-6 sm:-right-5 sm:w-20"
         />
 
         <p className="text-2xl font-semibold italic text-violet-700">{contribution.title}</p>

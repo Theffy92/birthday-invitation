@@ -46,6 +46,12 @@ function HeroSection({ celebrant, inviteesLine, hero, guestCount }) {
 
       <div className="grid gap-5 sm:grid-cols-[1.15fr_1fr] sm:items-center">
         <div className="relative mx-auto w-full max-w-sm -rotate-2 rounded-sm bg-zinc-100 p-3 text-zinc-900 shadow-[0_12px_30px_rgba(10,2,20,0.7)]">
+          <img 
+            src={purpleTape}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-5 -top-4 z-20 w-20 rotate-12 opacity-75 sm:w-24"
+          />
           <img
             src={theffyImage}
             alt={`Photo of ${celebrant}`}
