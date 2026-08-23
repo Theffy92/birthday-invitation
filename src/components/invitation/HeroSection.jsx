@@ -1,10 +1,33 @@
 import { getInvitationWording } from "../../utils/invitationWording"
 import theffyImage from "../../assets/theffy.jpeg"
+import argentinaFlag from "../../assets/decorations/argentina-flag.webp"
+import purpleTape from "../../assets/decorations/purple_tape.png"
+import sparkles from "../../assets/decorations/y2k_sparkles.png"
+import heart from "../../assets/decorations/y2k_heart.png"
 
 function HeroSection({ celebrant, inviteesLine, hero, guestCount }) {
   const invitationWording = getInvitationWording(guestCount)
   return (
-    <section className="space-y-8">
+    <section className="relative space-y-8">
+      <div className="pointer-events-none absolute -left-2 -top-4 z-20 rotate-[-8deg] sm:-left-5 sm:-top-6"
+            aria-hidden="true"
+      >
+        <div className="bg-zinc-100 p-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.45)] sm:p-2">
+          <img src={argentinaFlag} alt="" className="block w-16 sm:w-24" />
+          <img
+            src={purpleTape}
+            alt=""
+            className="absolute -left-5 -top-3 w-16 rotate-[-18deg] opacity-80"
+          />
+        </div>
+      </div>
+      <img 
+        src={sparkles}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute right-2 top-24 z-10 w-14 opacity-80 sm:right-8 sm:top-28 sm:w-20"
+      />
+
       <header className="space-y-5 text-center">
         {/* <p className="text-xs uppercase tracking-[0.2em] text-violet-300/90">hey &lt;3</p> */}
         <div className="space-y-1 text-xs text-violet-200/80">
@@ -22,7 +45,13 @@ function HeroSection({ celebrant, inviteesLine, hero, guestCount }) {
       </header>
 
       <div className="grid gap-5 sm:grid-cols-[1.15fr_1fr] sm:items-center">
-        <div className="mx-auto w-full max-w-sm -rotate-2 rounded-sm bg-zinc-100 p-3 text-zinc-900 shadow-[0_12px_30px_rgba(10,2,20,0.7)]">
+        <div className="relative mx-auto w-full max-w-sm -rotate-2 rounded-sm bg-zinc-100 p-3 text-zinc-900 shadow-[0_12px_30px_rgba(10,2,20,0.7)]">
+          <img 
+            src={purpleTape}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-5 -top-4 z-20 w-20 rotate-12 opacity-75 sm:w-24"
+          />
           <img
             src={theffyImage}
             alt={`Photo of ${celebrant}`}
@@ -31,14 +60,26 @@ function HeroSection({ celebrant, inviteesLine, hero, guestCount }) {
           <p className="mt-2 text-center text-sm font-medium">
             {hero.postcardTitle} * {hero.postcardDate}
           </p>
+          <img
+            src={heart}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-4 right-3 z-10 w-10 rotate-12 opacity-90 sm:hidden"
+          />
         </div>
-        <div className="space-y-2 text-center sm:text-left">
+        <div className="relative space-y-2 text-center sm:text-left">
+          <img 
+            src={heart}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-2 -top-9 hidden w-14 rotate-12 opacity-90 sm:block"
+          />
           <p className="text-lg font-semibold italic text-cyan-300">{hero.note}</p>
           <p className="text-sm leading-relaxed text-violet-100/80">{hero.description}</p>
         </div>
       </div>
 
-      <p className="text-center text-xl text-fuchsia-400 drop-shadow-[0_0_18px_rgba(232,121,249,0.9)]">&lt;3</p>
+      {/* <p className="text-center text-xl text-fuchsia-400 drop-shadow-[0_0_18px_rgba(232,121,249,0.9)]">&lt;3</p> */}
       <p className="sr-only">Birthday invitation for {celebrant}</p>
     </section>
   )
