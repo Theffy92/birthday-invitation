@@ -1,7 +1,24 @@
+import basket from '../../assets/decorations/argentina_food_basket.png'
+import purpleTape from '../../assets/decorations/purple_tape.png'
+
 function PotluckSection({ contribution, prompt, value, onChange, disabled, potluckLabel }) {
   return (
     <section className="grid gap-4 sm:grid-cols-2">
-      <article className="-rotate-1 rounded-sm bg-amber-50 p-5 text-zinc-900 shadow-[0_12px_30px_rgba(10,2,20,0.7)]">
+      <article className="relative -rotate-1 rounded-sm bg-amber-50 p-5 text-zinc-900 shadow-[0_12px_30px_rgba(10,2,20,0.7)]">
+        <img 
+          src={purpleTape}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-4 -top-3 w-16 -rotate-6 opacity-70"
+        />
+
+        <img
+          src={basket}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-3 -top-4 w-14 rotate-6 sm:w-16"
+        />
+
         <p className="text-2xl font-semibold italic text-violet-700">{contribution.title}</p>
         <p className="mt-3 text-sm leading-relaxed text-zinc-700">{contribution.description}</p>
         <p className="mt-4 text-xs font-semibold italic text-fuchsia-600">{contribution.idea}</p>
