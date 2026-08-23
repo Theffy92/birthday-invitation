@@ -27,12 +27,12 @@ function RSVPSection({
               <button
                 type="button"
                 onClick={onDecline}
-                className="w-full rounded-full border border-rose-400/50 bg-rose-950/30 px-4 py-3 text-sm font-semibold text-rose-200"
+                className="w-full cursor-pointer rounded-full border border-rose-400/50 bg-rose-950/30 px-4 py-3 text-sm font-semibold text-rose-200 transition-all duration-200 hover:border-rose-400 hover:bg-rose-500/20 hover:text-rose-100 hover:shadow-[0_0_18px_rgba(251,113,133,0.25)] active:scale-[0.98] active:border-rose-300 active:bg-rose-500/30 active:text-white"
               >
                 {declineLabel}
               </button>
 
-              <label className="flex items-center justify-between rounded-lg border border-violet-500/40 bg-violet-950/60 px-3 py-2 text-sm text-violet-50">
+              <label className="flex cursor-pointer items-center justify-between rounded-lg border border-violet-500/40 bg-violet-950/60 px-3 py-2 text-sm text-violet-50 transition-all duration-200 hover:border-fuchsia-400/70 hover:bg-violet-900/70 active:scale-[0.99] active:border-fuchsia-400 active:bg-violet-900">
                 <span>Sí</span>
 
                 <input
@@ -54,7 +54,7 @@ function RSVPSection({
               <button
                 type="button"
                 onClick={onDecline}
-                className="w-full rounded-full border border-rose-400/50 bg-rose-950/30 px-4 py-3 text-sm font-semibold text-rose-200"
+                className="w-full cursor-pointer rounded-full border border-rose-400/50 bg-rose-950/30 px-4 py-3 text-sm font-semibold text-rose-200 transition-all duration-200 hover:border-rose-400 hover:bg-rose-500/20 hover:text-rose-100 hover:shadow-[0_0_18px_rgba(251,113,133,0.25)] active:scale-[0.98] active:border-rose-300 active:bg-rose-500/30 active:text-white"
               >
                 {declineLabel}
               </button>
@@ -62,7 +62,7 @@ function RSVPSection({
               {guests.map((guest) => (
                 <label
                   key={guest.id}
-                  className="flex items-center justify-between rounded-lg border border-violet-500/40 bg-violet-950/60 px-3 py-2 text-sm text-violet-50"
+                  className="flex cursor-pointer items-center justify-between rounded-lg border border-violet-500/40 bg-violet-950/60 px-3 py-2 text-sm text-violet-50 transition-all duration-200 hover:border-fuchsia-400/70 hover:bg-violet-900/70 active:scale-[0.99] active:border-fuchsia-400 active:bg-violet-900"
                 >
                   <span>{guest.name}</span>
 
