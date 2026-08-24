@@ -23,5 +23,8 @@ export function getInvitationWording(guestCount) {
             : "Confirmá al menos una persona para poder completar esta sección",
 
         confirmLabel: "Confirmar asistencia",
+        contributionCofirmation: isSingleGuest
+            ? "Trae"
+            : "Traen",
     }
 }
