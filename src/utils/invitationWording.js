@@ -23,6 +23,9 @@ export function getInvitationWording(guestCount) {
             : "Confirmá al menos una persona para poder completar esta sección",
 
         confirmLabel: "Confirmar asistencia",
+        confirmationDeadline: isSingleGuest
+            ? "Tenés tiempo para confirmar hasta el"
+            : "Tienen tiempo para confirmar hasta el",
         contributionCofirmation: isSingleGuest
             ? "Trae"
             : "Traen",
