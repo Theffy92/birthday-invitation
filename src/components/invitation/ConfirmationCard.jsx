@@ -1,5 +1,7 @@
+import { getInvitationWording } from "../../utils/invitationWording"
 function ConfirmationCard({ guests, contribution, onEdit}) {
   const guestNames = guests.map((guest) => guest.name).join(", ")
+  const wording = getInvitationWording(guests.length)
 
   return (
     <section className="rounded-2xl border border-emerald-400/60 bg-emerald-950/45 p-4 text-emerald-100 shadow-[0_0_32px_rgba(16,185,129,0.25)]">
@@ -14,7 +16,11 @@ function ConfirmationCard({ guests, contribution, onEdit}) {
 
       {contribution && (
         <p className="mt-3 text-sm text-emerald-100/90">
-          Traen: {contribution}
+          
+          {guests.length === 1
+            ? wording.contributionCofirmation + ": " + `${contribution}`
+            : wording.contributionCofirmation + ": " + `${contribution}`
+          } 
         </p>
       )}
 

@@ -6,6 +6,7 @@ import HeroSection from "../components/invitation/HeroSection"
 import PotluckSection from "../components/invitation/PotluckSection"
 import RSVPSection from "../components/invitation/RSVPSection"
 import DeclineModal from "../components/invitation/DeclineModal"
+import DeclinedStatusCard from "../components/invitation/DeclineStatusCard"
 import { getInvitationWording } from '../utils/invitationWording'
 import { formatDate } from '../utils/dateFormat'
 
@@ -22,6 +23,7 @@ function InvitationPage({ token }) {
   const [contribution, setContribution] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [showDeclineModal, setShowDeclineModal] = useState(false)
+  const [isDeclined, setIsDeclined] = useState(false)
 
   const wording = getInvitationWording(guests.length)
   const isSingleGuest = guests.length === 1
@@ -121,11 +123,13 @@ function InvitationPage({ token }) {
     setGuests(declinedGuests)
     setContribution("")
     setIsSubmitted(false)
+    setIsDeclined(true)
     setShowDeclineModal(true)
   }
 
   function handleEdit() {
     setIsSubmitted(false)
+    setIsDeclined(false)
     setSaveError(null)
   }
 
@@ -172,6 +176,7 @@ function InvitationPage({ token }) {
         )
 
         setIsSubmitted(hasResponded && hasAttendingGuests)
+        setIsDeclined(hasResponded && !hasAttendingGuests)
       }
       setIsLoading(false)
     }
@@ -285,7 +290,7 @@ function InvitationPage({ token }) {
             potluckLabel={wording.potluckLabel}
           />
 
-          {!isSubmitted && (
+          {!isSubmitted && !isDeclined && (
             <button
               type="button"
               onClick={handleSubmit}
@@ -306,6 +311,13 @@ function InvitationPage({ token }) {
             <ConfirmationCard
               guests={attendingGuests}
               contribution={contribution}
+              onEdit={handleEdit}
+            />
+          )}
+
+          {isDeclined && (
+            <DeclinedStatusCard
+              isSingleGuest={isSingleGuest}
               onEdit={handleEdit}
             />
           )}
