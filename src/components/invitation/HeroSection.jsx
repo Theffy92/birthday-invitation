@@ -1,9 +1,9 @@
 import { getInvitationWording } from "../../utils/invitationWording"
 import theffyImage from "../../assets/theffy.jpeg"
 import argentinaFlag from "../../assets/decorations/argentina-flag.webp"
-import purpleTape from "../../assets/decorations/purple_tape.png"
-import sparkles from "../../assets/decorations/y2k_sparkles.png"
-import heart from "../../assets/decorations/y2k_heart.png"
+import purpleTape from "../../assets/decorations/purple_tape.webp"
+import sparkles from "../../assets/decorations/y2k_sparkles.webp"
+import heart from "../../assets/decorations/y2k_heart.webp"
 
 function HeroSection({ celebrant, inviteesLine, hero, guestCount }) {
   const invitationWording = getInvitationWording(guestCount)
@@ -13,7 +13,14 @@ function HeroSection({ celebrant, inviteesLine, hero, guestCount }) {
             aria-hidden="true"
       >
         <div className="bg-zinc-100 p-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.45)] sm:p-2">
-          <img src={argentinaFlag} alt="" className="block w-16 sm:w-24" />
+          <img 
+            src={argentinaFlag} 
+            alt="" 
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="block w-16 sm:w-24" 
+          />
           <img
             src={purpleTape}
             alt=""
@@ -25,11 +32,12 @@ function HeroSection({ celebrant, inviteesLine, hero, guestCount }) {
         src={sparkles}
         alt=""
         aria-hidden="true"
+        loading="eager"
+        decoding="async"
         className="pointer-events-none absolute right-2 top-24 z-10 w-14 opacity-80 sm:right-8 sm:top-28 sm:w-20"
       />
 
       <header className="space-y-5 text-center">
-        {/* <p className="text-xs uppercase tracking-[0.2em] text-violet-300/90">hey &lt;3</p> */}
         <div className="space-y-1 text-xs text-violet-200/80">
           <p>{inviteesLine}</p>
           <p>{invitationWording.invitationHeader}</p>
@@ -55,6 +63,9 @@ function HeroSection({ celebrant, inviteesLine, hero, guestCount }) {
           <img
             src={theffyImage}
             alt={`Photo of ${celebrant}`}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
             className="h-44 w-full rounded-xs object-cover"
           />
           <p className="mt-2 text-center text-sm font-medium">

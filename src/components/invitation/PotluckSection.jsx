@@ -1,5 +1,5 @@
-import basket from '../../assets/decorations/argentina_food_basket.png'
-import purpleTape from '../../assets/decorations/purple_tape.png'
+import basket from '../../assets/decorations/argentina_food_basket.webp'
+import purpleTape from '../../assets/decorations/purple_tape.webp'
 
 function PotluckSection({ contribution, prompt, value, onChange, disabled, potluckLabel }) {
   return (
@@ -16,6 +16,8 @@ function PotluckSection({ contribution, prompt, value, onChange, disabled, potlu
           src={basket}
           alt=""
           aria-hidden="true"
+          loading="lazy"
+          decoding="async"
           className="pointer-events-none absolute -bottom-5 -right-4 z-20 w-16 rotate-[-6deg] sm:-bottom-6 sm:-right-5 sm:w-20"
         />
 
