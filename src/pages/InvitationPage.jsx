@@ -8,7 +8,7 @@ import RSVPSection from "../components/invitation/RSVPSection"
 import DeclineModal from "../components/invitation/DeclineModal"
 import DeclineStatusCard from "../components/invitation/DeclineStatusCard"
 import { getInvitationWording } from '../utils/invitationWording'
-import { formatDate } from '../utils/dateFormat'
+import { formatDateWithWeekday } from '../utils/dateFormat'
 
 
 function InvitationPage({ token }) {
@@ -216,7 +216,7 @@ function InvitationPage({ token }) {
     eventDetails: [
       {
         label: "Fecha",
-        value: formatDate(invitationData.event.event_date),
+        value: formatDateWithWeekday(invitationData.event.event_date),
       },
       {
         label: "Hora",
