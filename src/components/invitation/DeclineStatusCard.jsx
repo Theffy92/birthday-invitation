@@ -1,4 +1,4 @@
-function DeclinedStatusCard({ isSingleGuest, onEdit }) {
+function DeclineStatusCard({ isSingleGuest, onEdit}) {
     return (
         <section className="rounded-2xl border border-rose-400/50 bg-rose-950/30 p-4 text-rose-100 shadow-[0_0_28px_rgba(251,113,133,0.15)]">
             <p className="text-sm font-semibold uppercase tracking-wide text-rose-300">
@@ -29,4 +29,4 @@ function DeclinedStatusCard({ isSingleGuest, onEdit }) {
     )
 }
 
-export default DeclinedStatusCard
+export default DeclineStatusCard

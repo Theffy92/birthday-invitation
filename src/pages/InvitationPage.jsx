@@ -6,7 +6,7 @@ import HeroSection from "../components/invitation/HeroSection"
 import PotluckSection from "../components/invitation/PotluckSection"
 import RSVPSection from "../components/invitation/RSVPSection"
 import DeclineModal from "../components/invitation/DeclineModal"
-import DeclinedStatusCard from "../components/invitation/DeclineStatusCard"
+import DeclineStatusCard from "../components/invitation/DeclineStatusCard"
 import { getInvitationWording } from '../utils/invitationWording'
 import { formatDate } from '../utils/dateFormat'
 
@@ -251,6 +251,8 @@ function InvitationPage({ token }) {
   // Declining is handled separately by the decline button.
   const canSubmit = hasAttendingGuests && hasContribution
 
+  const isResponseLocked = isSubmitted || isDeclined
+
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#05020d] px-4 py-8 text-white sm:px-6 sm:py-10">
       <div className="pointer-events-none absolute inset-0">
@@ -279,6 +281,7 @@ function InvitationPage({ token }) {
             declineLabel={wording.declineLabel}
             onDecline={handleDecline}
             onGuestToggle={handleGuestToggle}
+            disabled={isResponseLocked}
           />
 
           <PotluckSection
@@ -286,8 +289,9 @@ function InvitationPage({ token }) {
             prompt={wording.contributionPrompt}
             value={contribution}
             onChange={setContribution}
-            disabled={!hasAttendingGuests}
+            disabled={!hasAttendingGuests || isResponseLocked}
             potluckLabel={wording.potluckLabel}
+            isResponseLocked={isResponseLocked}
           />
 
           {!isSubmitted && !isDeclined && (
@@ -316,7 +320,7 @@ function InvitationPage({ token }) {
           )}
 
           {isDeclined && (
-            <DeclinedStatusCard
+            <DeclineStatusCard
               isSingleGuest={isSingleGuest}
               onEdit={handleEdit}
             />
