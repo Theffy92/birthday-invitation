@@ -43,7 +43,7 @@ function PotluckSection({ contribution, prompt, value, onChange, disabled, potlu
           disabled={disabled}
           className="mt-3 min-h-28 w-full resize-y rounded-xl border border-violet-500/40 bg-violet-950/60 p-3 text-sm text-violet-100 placeholder:text-violet-300/80 focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/30"
         />
-        {disabled && isResponseLocked && (
+        {disabled && !isResponseLocked && (
           <p className="mt-2 text-xs text-violet-300/60">
             {potluckLabel}
           </p>
