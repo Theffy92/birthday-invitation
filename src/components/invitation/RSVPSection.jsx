@@ -27,37 +27,6 @@ function RSVPSection({
             </p>
 
             <div className="mt-3 space-y-3">
-              <button
-                type="button"
-                disabled={disabled}
-                onClick={onDecline}
-                className="
-                  w-full cursor-pointer rounded-full 
-                  border border-rose-400/50 
-                  bg-rose-950/30 
-                  px-4 py-3 
-                  text-sm font-semibold text-rose-200 
-                  transition-all duration-200 
-                  hover:border-rose-400 
-                  hover:bg-rose-500/20 
-                  hover:text-rose-100 hover:shadow-[0_0_18px_rgba(251,113,133,0.25)] 
-                  active:scale-[0.98] 
-                  active:border-rose-300 
-                  active:bg-rose-500/30 
-                  active:text-white
-                  disabled:cursor-not-allowed
-                  disabled:border-violer-400/20
-                  disabled:bg-violet-950/20
-                  disabled:text-violet-300/40
-                  disabled:shadow-none
-                  disabled:hover:border-violet-400/20
-                  disabled:hover:bg-violet-950/20
-                  disabled:hover:text-violet-300/40
-                "
-              >
-                {declineLabel}
-              </button>
-
               <label className="flex cursor-pointer items-center justify-between rounded-lg border border-violet-500/40 bg-violet-950/60 px-3 py-2 text-sm text-violet-50 transition-all duration-200 hover:border-fuchsia-400/70 hover:bg-violet-900/70 active:scale-[0.99] active:border-fuchsia-400 active:bg-violet-900 has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50">
                 <span>Sí</span>
 
@@ -69,6 +38,41 @@ function RSVPSection({
                   className="h-4 w-4 accent-fuchsia-500 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </label>
+              <div className="pt-2">
+                <p>
+                  Si no podés venir, hacé click en el botón de abajo para declinar la invitación.
+                </p>
+                <button
+                  type="button"
+                  disabled={disabled}
+                  onClick={onDecline}
+                  className="
+                    w-full cursor-pointer rounded-full 
+                    border border-rose-400/50 
+                    bg-rose-950/30 
+                    px-4 py-3 
+                    text-sm font-semibold text-rose-200 
+                    transition-all duration-200 
+                    hover:border-rose-400 
+                    hover:bg-rose-500/20 
+                    hover:text-rose-100 hover:shadow-[0_0_18px_rgba(251,113,133,0.25)] 
+                    active:scale-[0.98] 
+                    active:border-rose-300 
+                    active:bg-rose-500/30 
+                    active:text-white
+                    disabled:cursor-not-allowed
+                    disabled:border-violer-400/20
+                    disabled:bg-violet-950/20
+                    disabled:text-violet-300/40
+                    disabled:shadow-none
+                    disabled:hover:border-violet-400/20
+                    disabled:hover:bg-violet-950/20
+                    disabled:hover:text-violet-300/40
+                  "
+                >
+                  {declineLabel}
+                </button>
+              </div>
             </div>
           </>
         ) : (
@@ -78,37 +82,6 @@ function RSVPSection({
             </p>
 
             <div className="mt-3 space-y-3">
-              <button
-                type="button"
-                onClick={onDecline}
-                disabled={disabled}
-                className="
-                  w-full cursor-pointer rounded-full 
-                  border border-rose-400/50 
-                  bg-rose-950/30 
-                  px-4 py-3 
-                  text-sm font-semibold text-rose-200 
-                  transition-all duration-200 
-                  hover:border-rose-400 
-                  hover:bg-rose-500/20 
-                  hover:text-rose-100 hover:shadow-[0_0_18px_rgba(251,113,133,0.25)] 
-                  active:scale-[0.98] 
-                  active:border-rose-300 
-                  active:bg-rose-500/30 
-                  active:text-white
-                  disabled:cursor-not-allowed
-                  disabled:border-violer-400/20
-                  disabled:bg-violet-950/20
-                  disabled:text-violet-300/40
-                  disabled:shadow-none
-                  disabled:hover:border-violet-400/20
-                  disabled:hover:bg-violet-950/20
-                  disabled:hover:text-violet-300/40
-                "
-              >
-                {declineLabel}
-              </button>
-
               {guests.map((guest) => (
                 <label
                   key={guest.id}
@@ -125,6 +98,41 @@ function RSVPSection({
                   />
                 </label>
               ))}
+              <div className="pt-2">
+                <p>
+                  Si nadie de este grupo puede venir, hacé click en el botón de abajo para declinar la invitación.
+                </p>
+                <button
+                  type="button"
+                  onClick={onDecline}
+                  disabled={disabled}
+                  className="
+                    w-full cursor-pointer rounded-full 
+                    border border-rose-400/50 
+                    bg-rose-950/30 
+                    px-4 py-3 
+                    text-sm font-semibold text-rose-200 
+                    transition-all duration-200 
+                    hover:border-rose-400 
+                    hover:bg-rose-500/20 
+                    hover:text-rose-100 hover:shadow-[0_0_18px_rgba(251,113,133,0.25)] 
+                    active:scale-[0.98] 
+                    active:border-rose-300 
+                    active:bg-rose-500/30 
+                    active:text-white
+                    disabled:cursor-not-allowed
+                    disabled:border-violer-400/20
+                    disabled:bg-violet-950/20
+                    disabled:text-violet-300/40
+                    disabled:shadow-none
+                    disabled:hover:border-violet-400/20
+                    disabled:hover:bg-violet-950/20
+                    disabled:hover:text-violet-300/40
+                  "
+                >
+                  {declineLabel}
+                </button>
+              </div>
             </div>
           </>
         )}
